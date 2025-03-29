@@ -2,6 +2,7 @@ import subprocess
 from ssh_client import SSHClient
 import pytest
 from utils import ping  
+import os
 
 # Function to be tested
 def hello():
@@ -19,6 +20,9 @@ def test_hello():
         ("9.9.9.9", True, None),  # Successful ping
         ("9.9.9.8", False, "Ping to 9.9.9.8 should return an error"),  # Unsuccessful ping
     ],
+)
+@pytest.mark.skipif(
+    os.getenv("GITHUB_ACTIONS") == "true", reason="Skipping ping tests in GitHub Actions workflow"
 )
 def test_ping(ip_address, expected_success, expected_error):
     success, error = ping(ip_address)

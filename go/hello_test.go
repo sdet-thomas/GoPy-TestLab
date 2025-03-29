@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "os"
     "testing"
 
     "github.com/stretchr/testify/assert"
@@ -23,6 +24,11 @@ func TestHello(t *testing.T) {
 
 // Test for PingTest
 func TestPing(t *testing.T) {
+    // Skip test only when running in GitHub Actions
+    if os.Getenv("GITHUB_ACTIONS") == "true" {
+        t.Skip("Skipping TestPing in GitHub Action workflow")
+    }
+
     tests := []struct {
         name          string
         ip            string
