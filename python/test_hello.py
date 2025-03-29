@@ -1,5 +1,6 @@
 import subprocess
 from ssh_client import SSHClient
+import pytest
 
 # Function to be tested
 def hello():
@@ -33,7 +34,15 @@ def test_ping():
     error = ping_test()
     assert error is None, "Ping to 9.9.9.9 should be successful"
 
-def test_ssh_commands():
+@pytest.mark.parametrize(
+    "name, command, expected, should_error",
+    [
+        ("Valid SSH Command", "whoami", "demo", False),
+        ("Invalid SSH Command", "invalidcommand", "Command failed with exit status 127", True),
+        ("Echo Command", 'echo "Hello world!"', "Hello world!", False),
+    ],
+)
+def test_ssh_commands(name, command, expected, should_error):
     # Define a single SSHClient instance
     client = SSHClient(
         host="test.rebex.net",
@@ -42,21 +51,14 @@ def test_ssh_commands():
         password="password"
     )
 
-    # Parameterize the commands and expected outputs
-    tests = [
-        {"name": "Valid SSH Command", "command": "whoami", "expected": "demo"},
-        {"name": "Invalid SSH Command", "command": "invalidcommand", "expected": "Command failed with exit status 127"},
-        {"name": "Echo Command", "command": 'echo "Hello world!"', "expected": "Hello world!"},
-    ]
+    output, error = client.run_command(command)
+    print(f"Test: {name}")
+    print(f"Output: {output}")  # Debugging output
+    print(f"Error: {error}")    # Debugging error
 
-    for test in tests:
-        output, error = client.run_command(test["command"])
-        print(f"Output: {output}")  # Debugging output
-        print(f"Error: {error}")    # Debugging error
-
-        if test["name"] == "Invalid SSH Command":
-            assert error is not None, "Invalid SSH command should return an error"
-            assert "exit status 127" in error, "Error message should indicate exit status 127"
-        else:
-            assert error is None, "SSH command should execute without errors"
-            assert test["expected"] in output, "Output should contain expected result"
+    if should_error:
+        assert error is not None, f"{name} should return an error"
+        assert "exit status 127" in error, f"{name} error message should indicate exit status 127"
+    else:
+        assert error is None, f"{name} should execute without errors"
+        assert expected in output, f"{name} output should contain expected result"
