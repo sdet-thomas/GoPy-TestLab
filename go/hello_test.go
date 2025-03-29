@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "os/exec"
     "testing"
 
     "github.com/stretchr/testify/assert"
@@ -22,21 +21,40 @@ func TestHello(t *testing.T) {
     assert.Equal(t, expected, actual, "The Hello function should return 'Hello, World!'")
 }
 
-// Function to test pinging 9.9.9.9
-func PingTest() error {
-    // Execute the ping command and capture its output
-    cmd := exec.Command("ping", "-c", "1", "9.9.9.9")
-    out, err := cmd.CombinedOutput() // Captures both stdout and stderr
-    fmt.Println(string(out))         // Print the output as a string
-    return err                       // Return the error (if any)
-}
-
 // Test for PingTest
 func TestPing(t *testing.T) {
-    err := PingTest()
+    tests := []struct {
+        name          string
+        ip            string
+        count         int
+        expectNoError bool
+    }{
+        {
+            name:          "Valid Ping",
+            ip:            "9.9.9.9",
+            count:         1,
+            expectNoError: true,
+        },
+        {
+            name:          "Invalid Ping",
+            ip:            "9.9.9.8",
+            count:         1,
+            expectNoError: false,
+        },
+    }
 
-    // Assert that the ping command was successful
-    assert.NoError(t, err, "Ping to 9.9.9.9 should be successful")
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            success, err := Ping(tt.ip, tt.count)
+            if tt.expectNoError {
+                assert.NoError(t, err, "Ping to %s should be successful", tt.ip)
+                assert.True(t, success, "Ping to %s should return true", tt.ip)
+            } else {
+                assert.Error(t, err, "Ping to %s should fail", tt.ip)
+                assert.False(t, success, "Ping to %s should return false", tt.ip)
+            }
+        })
+    }
 }
 
 func TestSSHCommand(t *testing.T) {

@@ -1,6 +1,7 @@
 import subprocess
 from ssh_client import SSHClient
 import pytest
+from utils import ping  
 
 # Function to be tested
 def hello():
@@ -12,27 +13,20 @@ def test_hello():
     actual = hello()
     assert actual == expected, "The hello function should return 'Hello, World!'"
 
-# Function to test pinging 9.9.9.9
-def ping_test():
-    try:
-        # Execute the ping command and capture its output
-        result = subprocess.run(
-            ["ping", "-c", "1", "9.9.9.9"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            check=True,
-        )
-        print("Command Output:", result.stdout)  # Print the output as a string
-        return None  # No error
-    except subprocess.CalledProcessError as e:
-        print("Error Output:", e.stderr)  # Print the error output
-        return e  # Return the error
-
-# Test for the ping_test function
-def test_ping():
-    error = ping_test()
-    assert error is None, "Ping to 9.9.9.9 should be successful"
+@pytest.mark.parametrize(
+    "ip_address, expected_success, expected_error",
+    [
+        ("9.9.9.9", True, None),  # Successful ping
+        ("9.9.9.8", False, "Ping to 9.9.9.8 should return an error"),  # Unsuccessful ping
+    ],
+)
+def test_ping(ip_address, expected_success, expected_error):
+    success, error = ping(ip_address)
+    assert success == expected_success, f"Ping to {ip_address} should {'succeed' if expected_success else 'fail'}"
+    if expected_error:
+        assert error is not None, f"Ping to {ip_address} should return an error"
+    else:
+        assert error is None, f"Ping to {ip_address} should not return an error"
 
 @pytest.mark.parametrize(
     "name, command, expected, should_error",
