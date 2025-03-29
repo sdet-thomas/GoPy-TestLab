@@ -40,17 +40,34 @@ The project currently implements and tests:
    ```
 
 ### Python Setup
-1. Install the required dependencies:
-   ```bash
-   pip install paramiko pytest
-   ```
-2. Navigate to the Python directory:
+1. Navigate to the Python directory:
    ```bash
    cd python
    ```
-3. Run the tests:
+2. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   ```
+3. Activate the virtual environment:
+   - On Windows:
+     ```bash
+     .venv\Scripts\activate
+     ```
+   - On macOS/Linux:
+     ```bash
+     source .venv/bin/activate
+     ```
+4. Install the required dependencies:
+   ```bash
+   pip install paramiko pytest
+   ```
+5. Run the tests:
    ```bash
    pytest -v
+   ```
+6. When finished, deactivate the virtual environment:
+   ```bash
+   deactivate
    ```
 
 ## Dependencies
