@@ -1,5 +1,6 @@
 import os
 import pytest
+import allure  # Added import for Allure
 from python.utils.ssh_client import SSHClient
 from python.utils.utils import ping  # Changed import to reference utils.py
 
@@ -8,12 +9,16 @@ def hello():
     return "Hello, World!"
 
 # Test for the hello function
+@allure.feature("Hello Functionality")
+@allure.story("Test hello function")
 @pytest.mark.hello
 def test_hello():
     expected = "Hello, World!"
     actual = hello()
     assert actual == expected, "The hello function should return 'Hello, World!'"
 
+@allure.feature("Network Functionality")
+@allure.story("Test ping functionality")
 @pytest.mark.parametrize(
     "ip_address, expected_success, expected_error",
     [
@@ -32,6 +37,8 @@ def test_ping(ip_address, expected_success, expected_error):
     else:
         assert error is None, f"Ping to {ip_address} should not return an error"
 
+@allure.feature("SSH Functionality")
+@allure.story("Test SSH commands")
 @pytest.mark.parametrize(
     "name, command, expected, should_error",
     [

@@ -21,6 +21,7 @@ classifiers = [
 dependencies = [
     "paramiko",
     "pytest",
+    "allure-pytest",  # Added Allure integration
 ]
 
 [project.optional-dependencies]

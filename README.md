@@ -1,5 +1,7 @@
 # GoPy-TestLab
 
+[Visit the GitHub Pages site for this project](https://sdet-thomas.github.io/GoPy-TestLab/)
+
 ## Project Description
 GoPy-TestLab documents my journey of learning Golang while refreshing my Python skills, specifically for test automation as a Software Development Engineer in Test (SDET). This repository contains examples, tools, and resources focused on building robust test frameworks, automation scripts, and testing utilities that can be applied in real-world QA environments.
 
@@ -68,6 +70,25 @@ The project currently implements and tests:
 6. When finished, deactivate the virtual environment:
    ```bash
    deactivate
+   ```
+
+## Generating Allure Report
+
+To generate and view the Allure report for Python tests:
+
+1. Run the tests with Allure:
+   ```bash
+   pytest --alluredir=allure-results
+   ```
+
+2. Generate the Allure report:
+   ```bash
+   allure generate allure-results -o allure-report --clean
+   ```
+
+3. Open the Allure report:
+   ```bash
+   allure open allure-report
    ```
 
 ## Dependencies

@@ -43,17 +43,31 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+  
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline
+  
       - name: Install dependencies
         run: |
           cd python
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Run Python tests
+  
+      - name: Run Python tests with Allure
         run: |
           cd python
-          pytest -v
+          pytest --alluredir=../pages/allure-results
+  
+      - name: Generate Allure report
+        run: |
+          cd python
+          allure generate ../pages/allure-results -o ../pages/allure-report --clean
+
   build:
     runs-on: ubuntu-latest
 

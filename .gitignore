@@ -50,3 +50,9 @@ src/*
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+
+pages/allure-results/*
+!pages/allure-report/.gitkeep
+
+pages/allure-report/*
+!pages/allure-results/.gitkeep

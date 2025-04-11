@@ -1,2 +1,3 @@
 pytest
 paramiko
+allure-pytest  # Added Allure integration
