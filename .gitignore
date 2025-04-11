@@ -41,3 +41,11 @@ vendor/
 
 # OS Files
 *.~lock.*
+
+# Terraform
+src/*
+!src/*.tf
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
