@@ -55,4 +55,5 @@ pages/allure-results/*
 !pages/allure-report/.gitkeep
 
 pages/allure-report/*
-!pages/allure-results/.gitkeep
+!pages/allure-report/.gitkeep
+!pages/allure-report/hello.html
