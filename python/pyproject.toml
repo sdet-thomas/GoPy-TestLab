@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gopy-testlab"
+version = "0.1.0"
+description = "Learning Golang while refreshing Python skills, specifically for test automation as an SDET"
+readme = "README.md"  # Changed to a local README path
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "T. Pham", email = "your-email@example.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "paramiko",
+    "pytest",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "mypy>=0.900",
+    "pytest-cov>=2.12.0",
+]
+
+[tool.setuptools]
+package-dir = {"python" = "."}
+packages = ["python", "python.utils", "python.tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+markers = [
+    "hello: tests for the hello functionality",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true

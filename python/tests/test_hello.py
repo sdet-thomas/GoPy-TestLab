@@ -1,8 +1,7 @@
-import subprocess
-from ..ssh_client import SSHClient  # Use relative import
-import pytest
-from ..utils import ping  
 import os
+import pytest
+from python.utils.ssh_client import SSHClient
+from python.utils.utils import ping  # Changed import to reference utils.py
 
 # Function to be tested
 def hello():
