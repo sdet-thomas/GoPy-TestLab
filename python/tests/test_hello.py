@@ -1,7 +1,7 @@
 import subprocess
-from ssh_client import SSHClient
+from ..ssh_client import SSHClient  # Use relative import
 import pytest
-from utils import ping  
+from ..utils import ping  
 import os
 
 # Function to be tested
@@ -9,6 +9,7 @@ def hello():
     return "Hello, World!"
 
 # Test for the hello function
+@pytest.mark.hello
 def test_hello():
     expected = "Hello, World!"
     actual = hello()
