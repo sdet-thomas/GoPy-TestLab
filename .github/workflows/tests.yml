@@ -68,6 +68,12 @@ jobs:
           cd python
           allure generate ../pages/allure-results -o ../pages/allure-report --clean
 
+      - name: Upload Allure report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: pages/allure-report
+
   build:
     needs: 
       - go-tests
@@ -77,6 +83,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Download Allure report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-report
+          path: pages/allure-report
 
       - name: Setup Pages
         id: pages
